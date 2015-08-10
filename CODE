@@ -1,0 +1,221 @@
+#include<IOSTREAM.H>
+#include<STDIO.H>
+#include<CONIO.H>
+#include<STRING.H>
+#include<FSTREAM.H>
+
+//Class for storing data.
+//-------------------------------------------------------------
+
+class ALIEN
+{
+	public:
+	char ATTRIB[10][20];
+	char VAL[10][20];
+}INFO;
+
+void main()
+{
+	int COUNT=5;
+	strcpy(INFO.ATTRIB[0],"Code Name");
+	strcpy(INFO.ATTRIB[1],"Blood Colour");
+	strcpy(INFO.ATTRIB[2],"No. of Antennas");
+	strcpy(INFO.ATTRIB[3],"No. of Legs");
+	strcpy(INFO.ATTRIB[4],"Home Planet");
+START:
+	int RUN=1;
+	while(RUN!=3)
+	{
+		clrscr();
+		int FORMAT;
+
+//Taking input for attribute values.
+//-------------------------------------------------------------
+
+		cout<<"Enter the following attributes: "<<endl;
+		for(int I=0; I<COUNT; I++)
+		{
+			cout<<INFO.ATTRIB[I]<<" : ";
+			gets(INFO.VAL[I]);
+		}
+FILEMENU:
+
+//Selecting file type to create.
+//-------------------------------------------------------------
+
+		cout<<"Export format :"<<endl;
+		cout<<"1. TXT"<<endl;
+		cout<<"2. PDF"<<endl;
+		cout<<"Enter option 1 or 2 : ";
+		cin>>FORMAT;
+		switch(FORMAT)
+		{
+
+//Creating TXT file.
+//------------------------------------------------------------
+
+			case 1: {
+					ofstream FOUT ("ALIENS.TXT");
+					for(int J=0; J<COUNT; J++)
+
+					{
+						FOUT<<INFO.ATTRIB[J]<<" :\t"<<INFO.VAL[J]<<"\n";
+					}
+					FOUT.close();
+					cout<<"TXT file created.";
+					getch();
+					break;
+				}
+
+//Creating PDF file.
+//------------------------------------------------------------
+
+			case 2: {
+					ofstream FOUT ("ALIENS.PDF");
+					for(int J=0; J<COUNT; J++)
+					{
+						FOUT<<INFO.ATTRIB[J]<<" :\t"<<INFO.VAL[J]<<"\n";
+					}
+					FOUT.close();
+					cout<<"PDF file created.";
+					getch();
+					break;
+				}
+			default:{
+					cout<<"Invalid choice."<<endl;
+					getch();
+					goto FILEMENU;
+				}
+		}
+MAINMENU:
+		clrscr();
+
+//Main Menu
+//------------------------------------------------------------
+
+		cout<<"MENU : "<<endl;
+		cout<<"1. Enter record."<<endl;
+		cout<<"2. Modify attribute(s)."<<endl;
+		cout<<"3. Exit."<<endl;
+		cout<<"Enter option 1,2 or 3 : ";
+		cin>>RUN;
+		switch(RUN)
+		{
+			case 1:	{
+					goto START;
+				}
+			case 2: {
+					int MOD;
+SECONDMENU:
+					clrscr();
+
+//Secondary Menu for attribute modification.
+//---------------------------------------------------------
+
+					cout<<"MENU : "<<endl;
+					cout<<"1. Add attribute."<<endl;
+					cout<<"2. Remove attribute."<<endl;
+					cout<<"3. Update attribute."<<endl;
+					cout<<"4. Main menu."<<endl;
+					cout<<"Enter option 1, 2, 3 or 4 : ";
+					cin>>MOD;
+					switch(MOD)
+					{
+
+//Inserting new attribute.
+//--------------------------------------------------------
+
+						case 1: {
+								char NEWATTRIB[20];
+								cout<<"Instert new attribute : ";
+								gets(NEWATTRIB);
+								strcpy(INFO.ATTRIB[COUNT],NEWATTRIB);
+								COUNT++;
+								cout<<"New attribute inserted.";
+								getch();
+								goto SECONDMENU;
+							}
+
+//Removing an attribute.
+//----------------------------------------------------------
+
+						case 2: {
+								int REMOVE=21;
+								char TEMP[20];
+								cout<<"Which attribute do you want to remove?"<<endl;
+								for(int I=0; I<COUNT; I++)
+								{
+									cout<<I+1<<". "<<INFO.ATTRIB[I]<<endl;
+								}
+								cout<<"Enter choice : ";
+								cin>>REMOVE;
+								if(REMOVE>COUNT)
+								{
+									cout<<"Invalid choice.";
+									getch();
+									goto SECONDMENU;
+								}
+								else
+								{
+									for(int J=(REMOVE-1); J<(COUNT-1); J++)
+									{
+										strcpy(INFO.ATTRIB[J],INFO.ATTRIB[J+1]);
+									}
+									cout<<"Selected attribute removed.";
+									COUNT--;
+									getch();
+									goto SECONDMENU;
+								}
+							}
+
+//Updating an attribute.
+//----------------------
+
+						case 3:	{
+								int UPDATE;
+								char NEWATTRIB[20];
+								cout<<"Which attribute do you want to update?"<<endl;
+								for(int I=0; I<COUNT; I++)
+								{
+									cout<<I+1<<". "<<INFO.ATTRIB[I]<<endl;
+								}
+								cout<<"Enter choice : ";
+								cin>>UPDATE;
+								if(UPDATE>COUNT)
+								{
+									cout<<"Invalid choice.";
+									getch();
+									goto SECONDMENU;
+								}
+								else
+								{
+									cout<<"Enter new attribute : ";
+									gets(NEWATTRIB);
+									strcpy(INFO.ATTRIB[UPDATE-1],NEWATTRIB);
+									cout<<"Selected attribute updated.";
+									getch();
+									goto SECONDMENU;
+								}
+							}
+						case 4: {
+								goto MAINMENU;
+							}
+						default:{
+								cout<<"Invalid choice.";
+								getch();
+								goto SECONDMENU;
+							}
+					}
+				}
+			case 3: {
+					RUN=3;
+					break;
+				}
+			default:{
+					cout<<"Invalid choice.";
+					getch();
+					goto MAINMENU;
+				}
+		}
+	}
+}
